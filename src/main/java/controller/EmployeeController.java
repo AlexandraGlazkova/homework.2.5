@@ -32,7 +32,7 @@ public class EmployeeController {
     public Employee findEmployee(@RequestParam String firstName, @RequestParam String lastName) throws EmployeeNotFoundException {
         return service.find(firstName, lastName);
     }
-    @GetMapping
+    @GetMapping("/findAll")
     public Collection<Employee> findAll(){
         return service.findAll();
     }
