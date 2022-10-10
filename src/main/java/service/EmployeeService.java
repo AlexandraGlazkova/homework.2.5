@@ -1,17 +1,20 @@
 package service;
 
-import exseption.EmployeeAlreadyAddedException;
-import exseption.EmployeeNotFoundException;
 import model.Employee;
+import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface EmployeeService {
-    Employee add (String firstName, String lastName) throws EmployeeAlreadyAddedException;
-    Employee remove (String firstName, String lastName) throws EmployeeNotFoundException;
-    Employee find (String firstName, String lastName) throws EmployeeNotFoundException;
+    public boolean add(String firstName, String lastName);
 
-    default Collection<Employee> findAll() {
-        return null;
-    }
+    public boolean remove(String firstName, String lastName);
+
+    public Employee find(String firstName, String lastName);
+
+    public boolean completeCollection();
+
+    public List<Employee> findAll();
+
+    String welcome();
 }

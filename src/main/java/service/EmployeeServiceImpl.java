@@ -4,49 +4,62 @@ import exseption.EmployeeAlreadyAddedException;
 import exseption.EmployeeNotFoundException;
 import model.Employee;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final Map<String,Employee> employees;
+    List<Employee> employees=new ArrayList<>();
 
-    public EmployeeServiceImpl(Map<String, Employee> employees){
-        this.employees  = new HashMap<>();
-
+    @Override
+    public List<Employee> findAll() {
+        return employees;
     }
 
     @Override
-    public Employee add(String firstName, String lastName) throws EmployeeAlreadyAddedException{
+    public String welcome() {
+        return "Добро пожаловать!";
+    }
+
+    @Override
+    public boolean add(String firstName, String lastName) {
         Employee employee = new Employee(firstName,lastName);
-        if (employees.containsKey(employee.getFullName())) {
-            throw new EmployeeAlreadyAddedException();
+        if (employees.contains(employee)) {
+            throw new EmployeeAlreadyAddedException("Сотрудник с таким фио уже есть");
         }
-        employees.put(employee.getFullName(),employee);
-        return (employee);
+        return employees.add(new Employee(firstName, lastName));
     }
 
     @Override
-    public Employee remove(String firstName, String lastName) throws EmployeeNotFoundException{
+    public boolean remove(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        if (employees.containsKey(employee.getFullName())) {
-            return employees.get(employee.getFullName());
+        if (employees.contains(employee)) {
+            return true;
         }
-        throw new EmployeeNotFoundException();
+        throw new EmployeeNotFoundException("Сотрудник не найден");
     }
+    @Override
+    public boolean completeCollection() {
+        employees.add(new Employee("Иван", "Иванов"));
+        employees.add(new Employee("Денис", "Денисов"));
+        employees.add(new Employee("Максим", "Максимов"));
+        employees.add(new Employee("Андрей", "Андреев"));
+        employees.add(new Employee("Иван", "Андреев"));
+        employees.add(new Employee("Денис", "Иванов"));
+        employees.add(new Employee("Максим", "Денисов"));
+        employees.add(new Employee("Андрей", "Максимов"));
+        return true;
+    }
+
 
     @Override
-    public Employee find(String firstName, String lastName) throws EmployeeNotFoundException{
-        Employee employee=new Employee(firstName, lastName);
-        if (employees.containsKey(employee.getFullName())){
-            return employees.get(employee.getFullName());
+    public Employee find(String firstName, String lastName) {
+        Employee employee = new Employee(firstName, lastName);
+        if (employees.contains(employee)) {
+            return employee;
         }
-        throw new EmployeeNotFoundException();
+        throw new EmployeeNotFoundException("Сотрудник не найден");
     }
 
 
-    @Override
-    public Collection<Employee> findAll() {
-        return Collections.unmodifiableCollection(employees.values());
-    }
 }
