@@ -1,4 +1,4 @@
-package model;
+package pro.sky.homework25.model;
 
 import java.util.Objects;
 
@@ -32,6 +32,7 @@ public class Employee {
     public int hashCode() {
         return Objects.hash(firstName, lastName);
     }
+
 
     @Override
     public String toString() {

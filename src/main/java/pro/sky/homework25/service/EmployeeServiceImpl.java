@@ -1,9 +1,11 @@
-package service;
+package pro.sky.homework25.service;
 
-import exseption.EmployeeAlreadyAddedException;
-import exseption.EmployeeNotFoundException;
-import model.Employee;
 import org.springframework.stereotype.Service;
+import pro.sky.homework25.exseption.EmployeeAlreadyAddedException;
+import pro.sky.homework25.exseption.EmployeeNotFoundException;
+import pro.sky.homework25.model.Employee;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,3 +65,4 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
 }
+

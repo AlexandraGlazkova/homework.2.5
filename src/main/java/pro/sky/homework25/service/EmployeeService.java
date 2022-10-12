@@ -1,7 +1,6 @@
-package service;
+package pro.sky.homework25.service;
 
-import model.Employee;
-import org.springframework.stereotype.Service;
+import pro.sky.homework25.model.Employee;
 
 import java.util.List;
 
