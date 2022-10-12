@@ -1,68 +1,91 @@
 package pro.sky.homework25.service;
 
+
 import org.springframework.stereotype.Service;
-import pro.sky.homework25.exseption.EmployeeAlreadyAddedException;
-import pro.sky.homework25.exseption.EmployeeNotFoundException;
 import pro.sky.homework25.model.Employee;
+import java.util.*;
+import java.util.stream.Collectors;
 
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    List<Employee> employees=new ArrayList<>();
+    private final List<Employee> employees;
+    private final String ERR_EMPL_ALREADY_ADDED = "Сотрудник уже имеется в массиве";
+    private final String ERR_EMPL_NOT_FOUND = "Сотрудник не найден";
+
+    public EmployeeServiceImpl(List<Employee> employees) {
+        this.employees = employees;
+    }
 
     @Override
-    public List<Employee> findAll() {
+    public Employee addEmployee(String firstName, String lastName, int salary, int department) {
+        Employee employee = new Employee(firstName, lastName, salary, department);
+        if (employees.contains(employee)) {
+            throw new RuntimeException(ERR_EMPL_ALREADY_ADDED);
+        }
+        employees.add(employee);
+        return employee;
+    }
+
+    @Override
+    public Employee removeEmployee(String firstName, String lastName) {
+        Employee employee = findEmployee(firstName, lastName);
+        employees.remove(employee);
+        return employee;
+    }
+
+    @Override
+    public Employee findEmployee(String firstName, String lastName) {
+        final Optional<Employee> employee = employees.stream()
+                .filter(e -> e.getFirstName().equals(firstName) && e.getLastName().equals(lastName))
+                .findAny();
+        return employee.orElseThrow(() -> new RuntimeException(ERR_EMPL_NOT_FOUND));
+    }
+
+    @Override
+    public Employee getLowestPaidEmployee(int department) {
+        return employees.stream()
+                .filter(e -> e.getDepartment() == department)
+                .min(Comparator.comparingInt(e -> e.getSalary()))
+                .orElseThrow(() -> new RuntimeException(ERR_EMPL_NOT_FOUND));
+    }
+
+    @Override
+    public Employee getHighestPaidEmployee(int department) {
+        return employees.stream()
+                .filter(e -> e.getDepartment() == department)
+                .max(Comparator.comparingInt(e -> e.getSalary()))
+                .orElseThrow(() -> new RuntimeException(ERR_EMPL_NOT_FOUND));
+    }
+
+    @Override
+    public List<Employee> printEmployeesForDepartment(int department) {
+        return employees.stream()
+                .filter(e -> e.getDepartment() == department)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Employee> printEmployeesByDepartments() {
+        return Collections.unmodifiableList(employees.stream()
+                .sorted(Comparator.comparingInt(e -> e.getDepartment()))
+                .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<Employee> printEmployees() {
+        return Collections.unmodifiableList(employees);
+    }
+
+    @Override
+    public List<Employee> fillEmployeesList() {
+        employees.add(new Employee("Maria", "Sharapova", 80_000, 2));
+        employees.add(new Employee("Vasya", "Pupkin", 10_000, 1));
+        employees.add(new Employee("Oleg", "Ivanov", 20_000, 1));
+        employees.add(new Employee("Rafa", "Nadal", 100_000, 2));
+        employees.add(new Employee("Roger", "Federer", 120_000, 2));
+        employees.add(new Employee("Ivan", "Urgant", 30_000, 1));
         return employees;
     }
-
-    @Override
-    public String welcome() {
-        return "Добро пожаловать!";
-    }
-
-    @Override
-    public boolean add(String firstName, String lastName) {
-        Employee employee = new Employee(firstName,lastName);
-        if (employees.contains(employee)) {
-            throw new EmployeeAlreadyAddedException("Сотрудник с таким фио уже есть");
-        }
-        return employees.add(new Employee(firstName, lastName));
-    }
-
-    @Override
-    public boolean remove(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        if (employees.contains(employee)) {
-            return true;
-        }
-        throw new EmployeeNotFoundException("Сотрудник не найден");
-    }
-    @Override
-    public boolean completeCollection() {
-        employees.add(new Employee("Иван", "Иванов"));
-        employees.add(new Employee("Денис", "Денисов"));
-        employees.add(new Employee("Максим", "Максимов"));
-        employees.add(new Employee("Андрей", "Андреев"));
-        employees.add(new Employee("Иван", "Андреев"));
-        employees.add(new Employee("Денис", "Иванов"));
-        employees.add(new Employee("Максим", "Денисов"));
-        employees.add(new Employee("Андрей", "Максимов"));
-        return true;
-    }
-
-
-    @Override
-    public Employee find(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        if (employees.contains(employee)) {
-            return employee;
-        }
-        throw new EmployeeNotFoundException("Сотрудник не найден");
-    }
-
-
 }
 
