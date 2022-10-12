@@ -1,5 +1,7 @@
 package pro.sky.homework25.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +16,6 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
-
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
@@ -46,7 +47,6 @@ public class EmployeeController {
         }
         return employee;
     }
-
     @GetMapping(path = "/find")
     public Object findEmployee(
             @RequestParam(value = "firstName") String firstName,
@@ -59,7 +59,6 @@ public class EmployeeController {
         }
         return employee;
     }
-
     @GetMapping(path = "/departments/max-salary")
     public Object getHighestPaidEmployee(
             @RequestParam(value = "departmentId") int departmentId) {
@@ -71,7 +70,6 @@ public class EmployeeController {
         }
         return employee;
     }
-
     @GetMapping(path = "/departments/min-salary")
     public Object getLowestPaidEmployee(
             @RequestParam(value = "departmentId") int departmentId) {
@@ -83,7 +81,6 @@ public class EmployeeController {
         }
         return employee;
     }
-
     @GetMapping(path = "/departments/all", params = "departmentId")
     public Object printEmployeesForDepartment(
             @RequestParam(value = "departmentId") int departmentId) {
@@ -95,7 +92,6 @@ public class EmployeeController {
         }
         return employees;
     }
-
     @GetMapping(path = "/departments/all")
     public Object printEmployeesByDepartments() {
         List<Employee> employees = null;
@@ -106,7 +102,6 @@ public class EmployeeController {
         }
         return employees;
     }
-
     @GetMapping(path = "/print")
     public Object printEmployees() {
         List<Employee> employees = null;
@@ -117,7 +112,6 @@ public class EmployeeController {
         }
         return employees;
     }
-
     @GetMapping(path = "/fill")
     public Object fillEmployeesList() {
         List<Employee> employees = null;
@@ -128,5 +122,4 @@ public class EmployeeController {
         }
         return employees;
     }
-
 }
