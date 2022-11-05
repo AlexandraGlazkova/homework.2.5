@@ -7,14 +7,23 @@ import static org.apache.tomcat.util.IntrospectionUtils.capitalize;
 public class Employee {
     private final String firstName;
     private final String lastName;
-    private int salary;
     private int department;
+    private double salary;
+    public final static int NUMBER_OF_DEPARTMENTS = 5;
 
-    public Employee(String firstName, String lastName, int salary, int department) {
-        this.firstName = capitalize(firstName.toLowerCase());
-        this.lastName = capitalize(lastName.toLowerCase());
-        this.salary = salary;
+    public Employee(String firstName, String lastName, int department, double salary) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.department = department;
+        this.salary = salary;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public int getDepartment() {
+        return department;
     }
 
     public String getFirstName() {
@@ -25,12 +34,8 @@ public class Employee {
         return lastName;
     }
 
-    public int getSalary() {
-        return salary;
-    }
-
-    public int getDepartment() {
-        return department;
+    public String getFullName() {
+        return firstName+" "+lastName;
     }
 
     @Override
@@ -38,12 +43,12 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return firstName.equals(employee.firstName) && lastName.equals(employee.lastName);
+        return salary == employee.salary && department == employee.department && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName);
+        return Objects.hash(firstName, lastName, salary, department);
     }
 
     @Override
