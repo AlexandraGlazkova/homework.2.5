@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.homework25.exseption.EmployeeNotFoundException;
@@ -27,20 +28,22 @@ import static org.mockito.Mockito.when;
 public class DepartmentServiceTest {
 
 
+
+    @InjectMocks
     private DepartmentService departmentService;
     @Mock
     private EmployeeService employeeService;
 
-    @BeforeEach
-    public void beforeEach() {
-        departmentService = new DepartmentServiceImpl(employeeService);
-        List<Employee> employees = List.of(
-                new Employee("FIRST_NAME_IVAN", "LAST_NAME_IVANOV", 1, 10000),
-                new Employee("FIRST_NAME_PETR", "LAST_NAME_PETROV", 2, 20000),
-                new Employee("FIRST_NAME_DENIS", "LAST_NAME_DENISOV", 5, 30000)
-        );
-        when(employeeService.findAll()).thenReturn(employees);
-    }
+//    @BeforeEach
+//    public void beforeEach() {
+//        departmentService = new DepartmentServiceImpl(employeeService);
+//        List<Employee> employees = List.of(
+//                new Employee("FIRST_NAME_IVAN", "LAST_NAME_IVANOV", 1, 10000),
+//                new Employee("FIRST_NAME_PETR", "LAST_NAME_PETROV", 2, 20000),
+//                new Employee("FIRST_NAME_DENIS", "LAST_NAME_DENISOV", 5, 30000)
+//        );
+//        when(employeeService.findAll()).thenReturn(employees);
+//    }
 
     @ParameterizedTest
     @MethodSource("employeeWithMaxSalary")
